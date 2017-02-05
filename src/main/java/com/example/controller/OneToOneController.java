@@ -48,4 +48,11 @@ public class OneToOneController {
         employeeRepository.delete(employee);
         return "Employee for ID : " + employee;
     }
+
+    @RequestMapping(value = "/delete/department/{id}")
+    public String deleteDepartment(@PathVariable long id){
+        Department department = departmentRepository.getOne(id);
+        departmentRepository.delete(department);
+        return department.toString();
+    }
 }
