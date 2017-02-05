@@ -18,8 +18,12 @@ public class Employee {
     @Column(name = "deg")
     private String deg;
 
-    @OneToOne
+// optional = false : apply unique key constrains on department
+    @OneToOne(optional = false,cascade = CascadeType.ALL)
     private Department department;
+
+    public Employee() {
+    }
 
     public Employee(String name, String deg, Department department) {
         this.name = name;
