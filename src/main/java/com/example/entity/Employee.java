@@ -1,12 +1,17 @@
 package com.example.entity;
 
+import com.example.Department;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.mapping.Collection;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
-public class Employee {
+public class Employee implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,17 +23,18 @@ public class Employee {
     @Column(name = "deg")
     private String deg;
 
-// optional = false : apply unique key constrains on department
-    @OneToOne(optional = false,cascade = CascadeType.ALL)
-    private Department department;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "department")
+    @Column(name = "department_name")
+    @Enumerated(EnumType.STRING)
+    private Set<Department> departments;
 
     public Employee() {
     }
 
-    public Employee(String name, String deg, Department department) {
+    public Employee(String name, String deg) {
         this.name = name;
         this.deg = deg;
-        this.department = department;
     }
 
     public Long getId() {
@@ -55,12 +61,12 @@ public class Employee {
         this.deg = deg;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Set<Department> getDepartments() {
+        return departments;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartments(Set<Department> departments) {
+        this.departments = departments;
     }
 
     @Override
@@ -69,7 +75,7 @@ public class Employee {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", deg='" + deg + '\'' +
-                ", department=" + department +
+                ", departments=" + departments +
                 '}';
     }
 }
