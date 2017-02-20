@@ -1,6 +1,7 @@
 package com.example.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity(name = "department")
 public class Department {
@@ -11,6 +12,9 @@ public class Department {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "department",fetch = FetchType.EAGER)
+    private Collection<Employee> employees;
 
     public Department() {
     }
@@ -33,6 +37,14 @@ public class Department {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Collection<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Collection<Employee> employees) {
+        this.employees = employees;
     }
 
     @Override

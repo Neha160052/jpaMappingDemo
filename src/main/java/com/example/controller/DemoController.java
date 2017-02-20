@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @RestController
 @RequestMapping(value = "/o2m")
-public class OneToOneController {
+public class DemoController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -32,12 +35,17 @@ public class OneToOneController {
     @RequestMapping(value = "/save2")
     public String save2Employee(){
         Department department  = new Department("Technical");
-        department = departmentRepository.saveAndFlush(department);
         Employee employee = new Employee("Neha","Engg",department);
         Employee employee2 = new Employee("Neha","Engg",department);
-        employee = employeeRepository.save(employee);
-        employee2 = employeeRepository.save(employee2);
-        return "Employee1 = " + employee.toString() + "  employee2 = " + employee2.toString();
+        employee = employeeRepository.saveAndFlush(employee);
+        employee2 = employeeRepository.saveAndFlush(employee2);
+        Collection<Employee> employees = new ArrayList<>();
+
+        employees.add(employee);
+        employees.add(employee2);
+        department.setEmployees(employees);
+        department = departmentRepository.saveAndFlush(department);
+        return department.toString();
     }
 
     @RequestMapping(value = "/delete/{id}" , method = RequestMethod.GET)

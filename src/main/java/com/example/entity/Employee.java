@@ -19,7 +19,7 @@ public class Employee {
     private String deg;
 
 // optional = false : apply unique key constrains on department
-    @OneToOne(optional = false,cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Department department;
 
     public Employee() {
